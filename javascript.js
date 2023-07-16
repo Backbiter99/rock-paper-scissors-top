@@ -7,42 +7,49 @@ function getComputerChoice() {
   } else return "scissors";
 }
 
-const computerChoice = getComputerChoice();
-
-const playerChoice = prompt(
-  "Choose between Rock, Paper or Scissors"
-).toLowerCase();
-
-function getResult() {
-  if (computerChoice == playerChoice) return "tie";
+function getResult(computerSelection, playerSelection) {
+  if (computerSelection == playerSelection) return "tie";
   else if (
-    (computerChoice == "rock" && playerChoice == "paper") ||
-    (computerChoice == "paper" && playerChoice == "scissors") ||
-    (computerChoice == "scissors" && playerChoice == "rock")
+    (computerSelection == "rock" && playerSelection == "paper") ||
+    (computerSelection == "paper" && playerSelection == "scissors") ||
+    (computerSelection == "scissors" && playerSelection == "rock")
   ) {
-    return "playerChoice";
-  } else return "computerChoice";
+    return "playerSelection";
+  } else return "computerSelection";
 }
 
-function playOneGame() {
-  const playGame = getResult();
+function playOneRound() {
+  const computerSelection = getComputerChoice();
+  const playerSelection = prompt(
+    "Choose between Rock, Paper or Scissors"
+  ).toLowerCase();
 
-  if (playGame == "playerChoice") {
-//    console.log("You Win!");
-    const gameResult = "You Win!";
-    return gameResult;
-  } else if (playGame == "computerChoice") {
-    const winner = computerChoice[0].toUpperCase() + computerChoice.substr(1);
-    const loser = playerChoice[0].toUpperCase() + playerChoice.substr(1);
+  const playRound = getResult(computerSelection, playerSelection);
 
-//    console.log(`You Lose! ${winner} beats ${loser}`);
-    const gameResult = `You Lose! ${winner} beats ${loser}`;
-    return gameResult;
+  let gameResult;
+
+  if (playRound == "playerSelection") {
+    //  console.log("You Win!");
+    gameResult = "You Win!";
+  } else if (playRound == "computerSelection") {
+    const winner =
+      computerSelection[0].toUpperCase() + computerSelection.substr(1);
+    const loser = playerSelection[0].toUpperCase() + playerSelection.substr(1);
+
+    //  console.log(`You Lose! ${winner} beats ${loser}`);
+    gameResult = `You Lose! ${winner} beats ${loser}`;
   } else {
-//    console.log("Tie Game!");
-    const gameResult = "Tie Game!";
-    return gameResult;
+    //  console.log("Tie Game!");
+    gameResult = "Tie Game!";
+  }
+  return gameResult;
+}
+
+function game() {
+  for (i = 0; i < 5; i++) {
+    const result = playOneRound();
+    console.log(result);
   }
 }
 
-const result = playOneGame();
+game();
