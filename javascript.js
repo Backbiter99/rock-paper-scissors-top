@@ -26,49 +26,116 @@ function playOneRound(playerSelection) {
   let gameResult;
 
   if (playRound == "playerSelection") {
-    //  console.log("You Win!");
     gameResult = "You Win!";
   } else if (playRound == "computerSelection") {
     const winner =
       computerSelection[0].toUpperCase() + computerSelection.substr(1);
     const loser = playerSelection[0].toUpperCase() + playerSelection.substr(1);
-
-    //  console.log(`You Lose! ${winner} beats ${loser}`);
     gameResult = `You Lose! ${winner} beats ${loser}`;
   } else {
-    //  console.log("Tie Game!");
     gameResult = "Tie Game!";
   }
   return gameResult;
 }
 
-function game() {
-  for (i = 0; i < 5; i++) {
-    const result = playOneRound();
-    console.log(result);
-  }
-}
-
-//game();
-
 const rock = document.querySelector("#rock");
 const paper = document.querySelector("#paper");
 const scissors = document.querySelector("#scissors");
 
+let result;
+
 rock.addEventListener("click", (e) => {
-  const result = playOneRound("rock");
-  console.log(result);
+  if (checkWinner()) {
+    return announceWinner();
+  }
+  result = playOneRound("scissors");
+  if (result == "You Win!") {
+    playerScore++;
+  } else if (result == "Tie Game!") {
+  } else {
+    computerScore++;
+  }
+  result = playOneRound("rock");
   e.stopPropagation();
+  updateScore();
+
+  if (checkWinner()) {
+    return announceWinner();
+  }
+  printResult.textContent = result;
+  buttons.appendChild(printResult);
 });
 
 paper.addEventListener("click", (e) => {
-  const result = playOneRound("paper");
-  console.log(result);
+  if (checkWinner()) {
+    return announceWinner();
+  }
+  result = playOneRound("scissors");
+  if (result == "You Win!") {
+    playerScore++;
+  } else if (result == "Tie Game!") {
+  } else {
+    computerScore++;
+  }
+  result = playOneRound("paper");
   e.stopPropagation();
+  updateScore();
+
+  if (checkWinner()) {
+    return announceWinner();
+  }
+  printResult.textContent = result;
+  buttons.appendChild(printResult);
 });
 
 scissors.addEventListener("click", (e) => {
-  const result = playOneRound("scissors");
-  console.log(result);
+  if (checkWinner()) {
+    return announceWinner();
+  }
+  result = playOneRound("scissors");
+  if (result == "You Win!") {
+    playerScore++;
+  } else if (result == "Tie Game!") {
+  } else {
+    computerScore++;
+  }
   e.stopPropagation();
+  updateScore();
+
+  if (checkWinner()) {
+    return announceWinner();
+  }
+  printResult.textContent = result;
+  buttons.appendChild(printResult);
 });
+
+const printResult = document.createElement("p");
+
+const buttons = document.querySelector(".button-div");
+
+let playerScore = 0;
+let computerScore = 0;
+
+function checkWinner() {
+  if (playerScore < 5 && computerScore < 5) return false;
+  else return true;
+}
+
+const playerScoreElement = document.querySelector("#playerScore");
+const computerScoreElement = document.querySelector("#computerScore");
+
+function updateScore() {
+  playerScoreElement.textContent = playerScore;
+  computerScoreElement.textContent = computerScore;
+}
+
+function announceWinner() {
+  let winnerString;
+  if (playerScore == 5) {
+    winnerString = "Congratulations! You Win";
+  } else {
+    winnerString = "Game Over! You Lose";
+  }
+  printResult.textContent = winnerString;
+  buttons.appendChild(printResult);
+}
